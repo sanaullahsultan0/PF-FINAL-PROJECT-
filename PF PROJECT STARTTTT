@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+struct book{
+    int id;
+    string name;
+
+};
+  vector<book> books;
+
+void addbook(){
+    book b;
+    cout<<"ENTER BOOK ID: "<<endl;
+    cin>>b.id;
+    cout<<"ENTER BOOK NAME :   "<<endl;
+    cin>>b.name;
+    books.push_back(b);
+}    
+
+void displaybooks(){
+    for(int i=0;i<books.size();i++){
+    cout<<"ID:  "<<books[i].id<<endl<<"name:  "<<books[i].name<<endl;
+    }
+    
+}
+
+
+int main() {
+addbook();
+displaybooks();
+
+    return 0;
+}
