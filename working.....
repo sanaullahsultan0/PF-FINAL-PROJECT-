@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Book {
+    int id;
+    string name;
+    bool issued;
+};
+
+vector<Book> books;
+
+void addBook() {
+    Book b;
+    cout << "Enter Book ID: ";
+    cin >> b.id;
+    cout << "Enter Book Name: ";
+    cin >> b.name;
+    b.issued = false;
+    books.push_back(b);
+    cout << "Book Added Successfully\n";
+}
+
+void displayBooks() {
+    if (books.empty()) {
+        cout << "No books available\n";
+        return;
+    }
+
+    for (int i = 0; i < books.size(); i++) {
+        cout << "ID: " << books[i].id
+             << " Name: " << books[i].name
+             << " Status: ";
+        if (books[i].issued)
+            cout << "Issued\n";
+        else
+            cout << "Available\n";
+    }
+}
+
+int main() {
+    int choice;
+
+    do {
+        cout << "\n1. Add Book";
+        cout << "\n2. Display Books";
+        cout << "\n3. Exit";
+        cout << "\nEnter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: addBook(); break;
+            case 2: displayBooks(); break;
+            case 3: cout << "Exiting...\n"; break;
+            default: cout << "Invalid Choice\n";
+        }
+    } while (choice != 3);
+
+    return 0;
+}
