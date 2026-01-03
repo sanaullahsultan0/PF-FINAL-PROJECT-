@@ -1,0 +1,117 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+
+const int MAX = 50;
+struct student{
+    int rollno;
+    string name;
+    char department[10];
+    float marks;
+    char grade;
+    int attendence;
+};
+struct book{
+    int id;
+    string title;
+};
+
+student students[MAX];
+//book books[max];
+int totalstudents =0;
+//int totalbooks =0;
+
+void loadData();
+void saveData();
+void addstudents();
+
+int main(){
+    int choise;
+    
+    loadData();
+   // saveBook();
+    
+    do{
+        cout<<"STUDENT MANAGEMENT SYSTEM"<<endl;
+        cout<<"ENTER THE NUMBER OF YOUR CHOISE"<<endl;
+        cout<<"1. add student"<<endl;
+      //  cout<<"2. show student"<<endl;
+        //cout<<"3. search student"<<endl;
+        //cout<<"4. update student"<<endl;
+        //cout<<"5. delete student"<<endl;
+        //cout<<"6. assighn grade"<<endl;
+        //cout<<"7. update attendence"<<endl;
+        //cout<<"8. library managment system"<<endl;
+        cout<<"0. for exit+save data"<<endl;
+        cin>>choise;
+        
+        if(choise==1){
+            addstudents();
+        }else if(choise==0){
+            saveData();
+            cout<<"data saved...exiting....";
+        }else{
+            cout<<"wrong choise..";
+        }
+            
+        
+        
+    }while(choise!=0);
+         
+    
+
+ 
+    return 0;
+}
+
+//fist fuction for loading data 
+void loadData(){
+ifstream file("student.txt");
+if(!file) return;
+
+while(file >>students[totalstudents].rollno
+          >>students[totalstudents].name
+          >>students[totalstudents].department
+         >>students[totalstudents].marks
+         >>students[totalstudents].grade
+         >>students[totalstudents].attendence){
+             totalstudents++;
+         }
+             file.close();
+         
+}
+
+//3nd function for saving data
+void saveData(){
+    ofstream file("student.txt");
+        for(int i=0;i<totalstudents;i++){
+            file<<students[i].rollno<<" "
+                <<students[i].name<<" "
+                <<students[i].department<<" "
+                <<students[i].marks<<" "
+                <<students[i].grade
+                <<students[i].attendence<<endl;
+            
+        }file.close();
+    
+}
+void addstudents(){
+    if( totalstudents>=MAX)return;
+    cout<<"roll number:  ";
+    cin>>students[totalstudents].rollno;
+    cout<<"name:  ";
+    cin>>students[totalstudents].name;
+    cout<<"Department:  ";
+    cin>>students[totalstudents].department;
+    cout<<"marks:  ";
+    cin>>students[totalstudents].marks;
+    
+    students[totalstudents].grade='-';
+    students[totalstudents].attendence=0;
+    totalstudents++;
+    cout<<"student added successfully"<<endl;
+    
+    
+}
+
