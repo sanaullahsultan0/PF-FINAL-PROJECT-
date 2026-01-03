@@ -1,0 +1,195 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+
+const int MAX = 50;
+struct student{
+    int rollno;
+    string name;
+    char department[10];
+    float marks;
+    char grade;
+    int attendence;
+};
+struct book{
+    int id;
+    string title;
+};
+
+student students[MAX];
+//book books[max];
+int totalstudents =0;
+//int totalbooks =0;
+
+void loadData();
+void saveData();
+void addstudents();
+void showstudents();
+void searchstudent();
+void updatemarks();
+
+
+
+int main(){
+    int choice;
+    
+    loadData();
+   // saveBook();  
+    
+    do{
+        cout<<"STUDENT MANAGEMENT SYSTEM"<<endl;
+        cout<<"ENTER THE NUMBER OF YOUR CHOISE"<<endl;
+        cout<<"1. add student"<<endl;
+        cout<<"2. show student"<<endl;
+        cout<<"3. search student"<<endl;
+        cout<<"4. update student"<<endl;
+     //cout<<"5. delete student"<<endl;
+        //cout<<"6. assighn grade"<<endl;
+        //cout<<"7. update attendence"<<endl;
+        //cout<<"8. library managment system"<<endl;
+        cout<<"0. for exit+save data"<<endl;
+        cin>>choice;
+
+        if(choice == 1){
+    addstudents();
+}
+else if(choice == 2){
+    showstudents();
+}
+else if(choice == 3){
+    searchstudent();
+}
+else if(choice == 4){
+    updatemarks();
+}
+else if(choice == 0){
+    saveData();
+    cout << "data saved... exiting...\n";
+}
+else{
+    cout << "wrong choice..\n";
+}
+
+            
+        
+        
+    }while(choice!=0);
+         
+    
+
+ 
+    return 0;
+}
+
+// fuction for loading data 
+void loadData(){
+ifstream file("student.txt");
+if(!file) return;
+
+while(file >>students[totalstudents].rollno
+          >>students[totalstudents].name
+          >>students[totalstudents].department
+         >>students[totalstudents].marks
+         >>students[totalstudents].grade
+         >>students[totalstudents].attendence){
+             totalstudents++;
+         }
+             file.close();
+         
+}
+
+//function for saving data
+void saveData(){
+    ofstream file("student.txt");
+        for(int i=0;i<totalstudents;i++){
+            file<<students[i].rollno<<" "
+                <<students[i].name<<" "
+                <<students[i].department<<" "
+                <<students[i].marks<<" "
+                <<students[i].grade
+                <<students[i].attendence<<endl;
+            
+        }file.close();
+    
+}
+
+//function for adding student data
+void addstudents(){
+    if( totalstudents>=MAX)return;
+    cout<<"roll number:  ";
+    cin>>students[totalstudents].rollno;
+    cout<<"name:  ";
+    cin>>students[totalstudents].name;
+    cout<<"Department:  ";
+    cin>>students[totalstudents].department;
+    cout<<"marks:  ";
+    cin>>students[totalstudents].marks;
+    
+    students[totalstudents].grade='-';
+    students[totalstudents].attendence=0;
+    totalstudents++;
+    cout<<"student added successfully"<<endl;
+    
+    
+}
+
+//function for showing all students
+void showstudents() {
+
+if(totalstudents==0){
+    return;
+      cout<<"no stdents to shown"<<endl;
+}
+    for(int i=0;i<totalstudents;i++) {
+        cout<<students[i].rollno<<" "
+            <<students[i].rollno<<" "
+            <<students[i].name<<" "
+            <<students[i].department<<" "
+            <<students[i].marks<<" "
+          <<students[i].grade<<" "
+            <<students[i].attendence<<"%\n ";
+    
+    }
+
+}
+//  function for searchimg students
+void searchstudent(){
+    int roll;
+    cout << "Enter roll number to search: ";
+    cin >> roll;
+
+    for(int i = 0; i < totalstudents; i++){
+        if(students[i].rollno == roll){
+         cout << "\nStudent Found\n";
+            cout << "roll: " << students[i].rollno << endl;
+              cout << "Name: " << students[i].name << endl;
+            cout << "department: " << students[i].department << endl;
+            cout << "marks: " << students[i].marks << endl;
+            cout << "Grade: " << students[i].grade << endl;
+            cout << "attendance: " << students[i].attendence << "%\n";
+            return;   
+        }
+    }
+
+    cout << "student not found"<<endl;
+}
+
+void updatemarks() {
+    int roll;
+    cout << "Enter roll no: ";
+    cin >> roll;
+
+    for (int i = 0; i < totalstudents; i++) {
+        if (students[i].rollno == roll) {
+            cout << "New marks: ";
+            cin >> students[i].marks;
+            cout << "Updated\n";
+            return;
+        }
+    }
+    cout << "Student not found\n";
+}
+
+
+
