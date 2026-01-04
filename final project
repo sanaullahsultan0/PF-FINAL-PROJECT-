@@ -1,0 +1,376 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+
+const int MAX=50;
+struct student{
+    int rollno;
+    string name;
+    char department[10];
+    float marks;
+    char grade;
+    int attendence;
+};
+struct book{
+    int id;
+    string title;
+};
+
+student students[MAX];
+book books[MAX];
+int totalstudents =0;
+int totalBooks =0;
+
+
+void loadData();
+void saveData();
+void loadBooks();
+void saveBooks();
+
+void addstudents();
+void showstudents();
+void searchstudent();
+void updatemarks();
+void deletestudent();
+void assigngrade();
+void updateattendance();
+
+void librarymenue();
+void addBook();
+void showBooks();
+void issueBook();
+void returnBook();
+
+int main(){
+    int choice;
+    
+    loadData();
+    loadBooks();  
+    
+    do{
+        cout<<"========STUDENT  MANAGEMENT SYSTEM========"<<endl;
+        cout<<"ENTER THE NUMBER OF YOUR CHOISE"<<endl;
+        cout<<"1. add student"<<endl;
+        cout<<"2. show student"<<endl;
+        cout<<"3. search student"<<endl;
+        cout<<"4. update marks"<<endl;
+        cout<<"5. delete student"<<endl;
+        cout<<"6. assighn grade"<<endl;
+        cout<<"7. update attendence"<<endl;
+        cout<<"8. library managment system"<<endl;
+        cout<<"\n0. for exit & save data\n"<<endl;
+        cin>>choice;
+
+        if(choice==1){
+    addstudents();
+}
+else if(choice==2){
+    showstudents();
+}
+else if(choice==3){
+    searchstudent();
+}
+else if(choice==4){
+    updatemarks();
+}
+else if(choice==5){
+    deletestudent();
+}
+else if(choice==6){
+    assigngrade();
+}
+else if(choice==7){
+    updateattendance();
+}
+else if(choice==8){
+    librarymenue();
+}
+else if(choice==0){
+    saveData();
+    saveBooks();
+    cout << "data saved... exiting..."<<endl;
+}
+else{
+    cout << "\nwrong choice..\n";
+}    
+        
+    }while(choice!=0);
+ 
+    return 0;
+}
+
+// fuction for loading data & STUDENTS
+void loadData(){
+ifstream file("student.txt");
+if(!file) return;
+
+while(file >>students[totalstudents].rollno
+          >>students[totalstudents].name
+          >>students[totalstudents].department
+         >>students[totalstudents].marks
+         >>students[totalstudents].grade
+         >>students[totalstudents].attendence){
+             totalstudents++;
+         }
+             file.close();
+         
+}
+
+//function for saving data&STUDENTS
+void saveData(){
+    ofstream file("student.txt");
+        for(int i=0;i<totalstudents;i++){
+            file<<students[i].rollno<<" "
+             <<students[i].name<<" "
+             <<students[i].department<<" "
+                <<students[i].marks<<" "
+                <<students[i].grade
+                <<students[i].attendence<<endl;
+            
+        }file.close();
+    
+}
+
+//FUNCTION for loading books
+void loadBooks() {
+    ifstream file("books.txt");
+    if (!file) return;
+
+    while (file>>books[totalBooks].id
+                >>books[totalBooks].title) {
+        totalBooks++;
+    }
+    file.close();
+}
+
+//function for saving books
+void saveBooks() {
+    ofstream file("books.txt");
+    for (int i=0; i<totalBooks; i++) {
+        file<<books[i].id<<" "
+             <<books[i].title<<endl;
+    }
+    file.close();
+}
+
+//function for adding student data
+void addstudents(){
+    if( totalstudents>=MAX)return;
+    cout<<"roll number:  ";
+    cin>>students[totalstudents].rollno;
+    cout<<"name:  ";
+    cin>>students[totalstudents].name;
+    cout<<"Department:  ";
+    cin>>students[totalstudents].department;
+    cout<<"marks:  ";
+    cin>>students[totalstudents].marks;
+    
+    students[totalstudents].grade='-';
+    students[totalstudents].attendence=0;
+    totalstudents++;
+    cout<<"student added successfully"<<endl;
+    
+    
+}
+
+//function for showing all students
+void showstudents() {
+
+if(totalstudents==0){
+      cout<<"no stdents to shown"<<endl;
+      return;
+}
+    for(int i=0;i<totalstudents;i++) {
+        cout<<students[i].rollno<<" "
+            <<students[i].rollno<<" "
+            <<students[i].name<<" "
+            <<students[i].department<<" "
+            <<students[i].marks<<" "
+          <<students[i].grade<<" "
+            <<students[i].attendence<<"%\n ";
+    
+    }
+
+}
+//  function for searchimg students
+void searchstudent(){
+    int roll;
+    cout << "Enter roll number to search: ";
+    cin >> roll;
+
+    for(int i=0;i<totalstudents;i++){
+        if(students[i].rollno==roll){
+         cout<<"\nStudent Found\n";
+            cout<<"roll: "<<students[i].rollno<<endl;
+              cout<<"Name: "<<students[i].name<<endl;
+            cout<<"department: "<<students[i].department<<endl;
+            cout<<"marks: "<<students[i].marks<<endl;
+            cout<<"Grade: "<<students[i].grade<<endl;
+            cout<<"attendance: "<<students[i].attendence<<"%\n";
+            return;   
+        }
+    }
+
+    cout<<"student not found"<<endl;
+}
+
+//function  for updatingg marks
+void updatemarks() {
+    int roll;
+    cout<<"Enter roll no: ";
+    cin>>roll;
+
+    for (int i=0;i<totalstudents;i++) {
+        if (students[i].rollno==roll) {
+            cout<<"New marks: ";
+            cin>>students[i].marks;
+            cout << "Updated\n";
+            return;
+        }
+    }
+    cout<<"Student not found\n";
+}
+
+//function for deleting student
+void deletestudent(){
+    int roll;
+    cout<<"Enter roll number to delete: ";
+    cin>>roll;
+
+    for(int i=0;i<totalstudents;i++){
+        if(students[i].rollno==roll){
+            for(int j=i;j<totalstudents -1;j++){
+                students[j]=students[j+1];
+            }
+            totalstudents--;
+            cout<<"Student deleted successfully\n";
+            return;
+        }
+    }
+    cout<<"Student not found\n";
+}
+
+//function for assiaghning grade to students
+void assigngrade(){
+    int roll;
+    cout<<"Enter roll number: ";
+    cin>>roll;
+
+    for(int i=0;i<totalstudents;i++){
+        if(students[i].rollno==roll){
+            if(students[i].marks>=90)students[i].grade = 'A';
+            else if(students[i].marks>=75) students[i].grade='B';
+            else if(students[i].marks>=60) students[i].grade='C';
+            else students[i].grade='F';
+
+            cout<<"Grade assigned\n";
+            return;
+        }
+    }
+    cout<<"Student not found\n";
+}
+
+//function for updating student attendence
+void updateattendance(){
+    int roll;
+    cout<<"Enter roll number: ";
+    cin>>roll;
+
+    for(int i=0;i<totalstudents;i++){
+        if(students[i].rollno==roll){
+            cout<<"Enter attendance (%): ";
+            cin>>students[i].attendence;
+            cout<<"Attendance updated\n";
+            return;
+        }
+    }
+    cout<<"Student not found\n";
+}
+
+//library managments system
+void librarymenue(){
+     int choice;
+    do {
+        cout<<"\nLIBRARY MENU\n";
+        cout<<"1. Issue Book\n";
+        cout<<"2. Return Book\n";
+        cout<<"3. Add Book\n";
+        cout<<"4. Show Books\n";
+        cout<<"0. Back\n";
+        cout<<"Enter choice: "<<endl;
+        cin >> choice;
+
+        if (choice==1){ 
+            issueBook();
+        }
+        else if (choice==2){
+             returnBook();}
+        else if (choice==3){
+             addBook();}
+        else if (choice==4){ 
+            showBooks();}
+        else if (choice!=0){
+             cout<<"Wrong choice"<<endl;}
+
+    } while (choice!= 0);
+}
+
+//function for adding book
+void addBook() {
+    if (totalBooks>=MAX) return;
+
+    cout<<"Book ID: ";
+    cin>>books[totalBooks].id;
+    cout<<"Book Title: ";
+    cin>>books[totalBooks].title;
+
+    totalBooks++;
+    cout<<"Book added\n";
+}
+
+//function for issueing book
+void issueBook() {
+    int id;
+    cout<<"Enter Book ID: "<<endl;
+    cin>>id;
+
+    for (int i=0; i<totalBooks; i++) {
+        if (books[i].id==id) {
+            for (int j=i;j<totalBooks-1;j++)
+                books[j]=books[j+1];
+            totalBooks--;
+            cout<<"Book issued\n"<<endl;
+            return;
+        }
+    }
+    cout<<"Book not found\n";
+}
+
+//function for returning book
+void returnBook() {
+    if (totalBooks>=MAX) return;
+
+    cout<<"Book ID: ";
+    cin>>books[totalBooks].id;
+    cout<<"Book Title: ";
+    cin>>books[totalBooks].title;
+
+    totalBooks++;
+    cout<<"Book returned\n";
+}
+
+//function for shpwing  book
+void showBooks() {
+    if (totalBooks==0) {
+        cout << "No books available\n";
+        return;
+    }
+
+    cout<<"\nID Title\n"<<endl;
+    for (int i = 0; i<totalBooks; i++) {
+        cout<<books[i].id<<" "<<books[i].title<<endl;
+    }
+
+
+
